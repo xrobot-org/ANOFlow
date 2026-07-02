@@ -55,7 +55,7 @@ class ANOFlow : public LibXR::Application {
 
   ANOFlow(LibXR::HardwareContainer& hw, LibXR::ApplicationManager& app,
           const char* data_topic_name, size_t task_stack_depth)
-      : topic_(data_topic_name, sizeof(data_), nullptr, true, true, true),
+      : topic_(LibXR::Topic::CreateTopic<Data>(data_topic_name, nullptr, true)),
         uart_(hw.template FindOrExit<LibXR::UART>({"ano_flow_uart"})),
         cmd_file_(LibXR::RamFS::CreateFile("ano_flow", CommandFunc, this)) {
     app.Register(*this);
