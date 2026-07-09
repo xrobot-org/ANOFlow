@@ -1,7 +1,14 @@
 # ANOFlow
 
-ANOTC optical flow V4.0 parser module. Refer to [its official website](https://www.anotc.com/wiki/%E5%8C%BF%E5%90%8D%E4%BA%A7%E5%93%81%E8%B5%84%E6%96%99/%E5%8C%BF%E5%90%8D%E5%85%89%E6%B5%81v4.0)
+ANOTC optical flow sensor UART parser module for XRobot.
 
+This module reads the ANOTC optical-flow binary stream from `ano_flow_uart`,
+parses flow, altitude, IMU sideband, and quaternion frames, publishes a compact
+sensor data topic, and exposes a RamFS shell command for link-health and sample
+status.
+
+The parser tracks whether the link, flow stream, altitude stream, and working
+state are alive so downstream control logic can reject stale optical-flow data.
 
 ## Required Hardware
 
@@ -10,15 +17,25 @@ ANOTC optical flow V4.0 parser module. Refer to [its official website](https://w
 
 ## Constructor Arguments
 
-- `data_topic_name`: `ano_flow_data`
-- `task_stack_depth`: `1024`
+- `data_topic_name`: default `"ano_flow_data"`
+- `task_stack_depth`: default `1024`
 
-## Output
+## Published Topics
 
-- `ANOFlow::Data`
+- `data_topic_name`: `ANOFlow::Data`, including link state, flow velocity, altitude, IMU sideband data, and quaternion payloads
 
-## Notes
+## Shell Commands
 
-- Parses the ANO optical-flow binary stream.
-- Publishes link-health, flow velocity, altitude, IMU sideband data, and
-  quaternion payloads from the sensor.
+The module registers `ano_flow` in `RamFS`.
+
+- `ano_flow` or `ano_flow status`: print link state, work state, quality, velocity, and altitude
+
+## XRobot Configuration Example
+
+```yaml
+- id: flow
+  name: ANOFlow
+  constructor_args:
+    data_topic_name: "ano_flow_data"
+    task_stack_depth: 1024
+```

@@ -2,7 +2,7 @@
 
 // clang-format off
 /* === MODULE MANIFEST V2 ===
-module_description: ANO optical flow parser module for UART4 link
+module_description: XRobot Module for ANOTC optical flow sensor
 constructor_args:
   - data_topic_name: "ano_flow_data"
   - task_stack_depth: 1024
