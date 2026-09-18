@@ -48,13 +48,16 @@ class ANOFlow
     uint32_t alt_update_count = 0;
   };
 
-  ANOFlow(LibXR::UART& external_ano_flow_uart, LibXR::RamFS& external_ramfs,
-          const char* data_topic_name, size_t task_stack_depth)
+  ANOFlow(
+      LibXR::UART& uart,
+      LibXR::RamFS& ramfs,
+      const char* data_topic_name = "ano_flow_data",
+      size_t task_stack_depth = 1024)
       : topic_(LibXR::Topic::CreateTopic<Data>(data_topic_name, nullptr, true)),
-        uart_(std::addressof(external_ano_flow_uart)),
+        uart_(std::addressof(uart)),
         cmd_file_(LibXR::RamFS::CreateFile("ano_flow", CommandFunc, this))
   {
-    external_ramfs.Add(cmd_file_);
+    ramfs.Add(cmd_file_);
 
     thread_.Create(this, ThreadFunc, "ano_flow_thread", task_stack_depth,
                    LibXR::Thread::Priority::HIGH);
