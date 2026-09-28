@@ -63,8 +63,6 @@ class ANOFlow
                    LibXR::Thread::Priority::HIGH);
   }
 
-  void OnMonitor() {}
-
  private:
   static constexpr uint8_t ANO_FRAME_HEAD_DEF = 0xAA;
   static constexpr uint8_t ANO_HW_TYPE_DEF = 0x05;
