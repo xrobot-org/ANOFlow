@@ -7,6 +7,7 @@ depends: []
 === END MANIFEST === */
 // clang-format on
 
+#include <algorithm>
 #include <array>
 #include <cstdint>
 #include <cstdlib>
