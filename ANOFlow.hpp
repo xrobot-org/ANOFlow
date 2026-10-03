@@ -2,7 +2,7 @@
 
 // clang-format off
 /* === MODULE MANIFEST V2 ===
-module_description: XRobot Module for ANOTC optical flow sensor
+module_description: ANOTC 光流传感器（UART）驱动模块 / Driver Module for the ANOTC optical-flow sensor over UART
 depends: []
 === END MANIFEST === */
 // clang-format on
