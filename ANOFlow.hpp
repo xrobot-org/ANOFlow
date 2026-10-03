@@ -273,7 +273,7 @@ class ANOFlow
         frame_buffer_[2] = data;
         break;
       case 3:
-        if (data < 250U)
+        if (data <= frame_buffer_.size() - 6U)
         {
           rx_state_ = 4;
           frame_buffer_[3] = data;
