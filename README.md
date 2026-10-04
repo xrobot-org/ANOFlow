@@ -29,7 +29,7 @@ The Module registers the command `ano_flow` in RamFS:
 | `0x51`，模式 2 | 融合光流速度与积分 | `of2_sta`、`vel_x_cmps`、`vel_y_cmps`、`vel_x_fix_cmps`、`vel_y_fix_cmps`、`integral_x`、`integral_y`、`quality` |
 | `0x34` | 高度 | `alt_cm` |
 | `0x01` | IMU 附带数据（原始值） | `acc`、`gyr` |
-| `0x04` | 四元数（放大 10000 倍） | `quaternion` |
+| `0x04` | 四元数（帧中为放大 10000 倍的整数，字段为还原后的值） | `quaternion` |
 
 速度单位为 cm/s，高度单位为 cm。`flow_update_count` 与 `alt_update_count` 分别统计收到的光流帧（模式 1 与 2）和高度帧的数量。
 
@@ -46,7 +46,7 @@ A frame consists of: head `0xAA`, target `0x05` or `0xFF`, function ID, length, 
 | `0x51`, mode 2 | Fused flow velocity and integral | `of2_sta`, `vel_x_cmps`, `vel_y_cmps`, `vel_x_fix_cmps`, `vel_y_fix_cmps`, `integral_x`, `integral_y`, `quality` |
 | `0x34` | Altitude | `alt_cm` |
 | `0x01` | IMU sideband (raw values) | `acc`, `gyr` |
-| `0x04` | Quaternion (scaled by 10000) | `quaternion` |
+| `0x04` | Quaternion (integers scaled by 10000 in the frame; the field holds the restored values) | `quaternion` |
 
 Velocities are in cm/s and altitude in cm. `flow_update_count` and `alt_update_count` count the received flow frames (modes 1 and 2) and altitude frames.
 
@@ -71,7 +71,7 @@ ANOFlow(LibXR::UART& uart,
 配置参数：
 
 - `data_topic_name`：发布的 Topic 名称，默认 `"ano_flow_data"`。
-- `task_stack_depth`：解析线程的栈深，默认 1024。
+- `task_stack_depth`：解析线程的栈深，单位字节，默认 1024。
 
 Dependencies:
 
@@ -81,7 +81,7 @@ Dependencies:
 Configuration parameters:
 
 - `data_topic_name`: name of the published Topic, default `"ano_flow_data"`.
-- `task_stack_depth`: stack depth of the parser thread, default 1024.
+- `task_stack_depth`: stack depth of the parser thread in bytes, default 1024.
 
 ## 4. Topic
 
